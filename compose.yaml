@@ -10,6 +10,8 @@ services:
     ports:
       - '5432:5432'
   vetclinic:
+    volumes:
+      - "./:/vetclinic"
     image: 'vetclinic'
     build:
       context: .
