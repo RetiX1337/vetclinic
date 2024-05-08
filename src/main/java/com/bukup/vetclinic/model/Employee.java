@@ -13,15 +13,12 @@ import java.util.Set;
 public class Employee
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
-	private Long id;
+	@Column(name = "user_id", nullable = false)
+	private Long userId;
 
-	@Column(name = "first_name", nullable = false)
-	private String firstName;
-
-	@Column(name = "last_name", nullable = false)
-	private String lastName;
+	@OneToOne(targetEntity = User.class)
+	@MapsId
+	private User user;
 
 	@OneToMany(mappedBy = "employee")
 	private Set<Visit> visits;

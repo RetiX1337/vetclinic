@@ -34,6 +34,10 @@ public class Visit
 	private Employee employee;
 
 	@ManyToOne
+	@JoinColumn(name = "visitor_id")
+	private Visitor visitor;
+
+	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private Category category;
 
@@ -41,6 +45,6 @@ public class Visit
 	private String result;
 
 	@OneToOne(mappedBy = "visit")
-	@JoinColumn(name = "time_slot_id")
+	@JoinColumn(name = "visit_id")
 	private TimeSlot timeSlot;
 }

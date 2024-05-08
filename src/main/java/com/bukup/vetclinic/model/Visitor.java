@@ -13,18 +13,16 @@ import lombok.Setter;
 public class Visitor
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
-	private Long id;
+	@Column(name = "user_id", nullable = false)
+	private Long userId;
+
+	@OneToOne(targetEntity = User.class)
+	@MapsId
+	private User user;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	private Set<Pet> pets;
 
-	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinTable(
-			name = "visitors_visits",
-			joinColumns = { @JoinColumn(name = "visitor_id") },
-			inverseJoinColumns = { @JoinColumn(name = "visit_id") }
-	)
+	@OneToMany(cascade = CascadeType.ALL)
 	private Set<Visit> visits;
 }
