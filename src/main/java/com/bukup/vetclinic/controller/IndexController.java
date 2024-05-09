@@ -11,16 +11,6 @@ public class IndexController {
 
     @GetMapping("/home")
     public String homePage(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
-        System.out.println(userDetails.getFirstName());
-        System.out.println("HERE IT IS");
-        model.addAttribute("userDetails", userDetails);
-        return "index";
-    }
-
-    @GetMapping("/hello")
-    public String hello(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
-        System.out.println(userDetails.getFirstName());
-        System.out.println("HERE IT IS 2");
         model.addAttribute("userDetails", userDetails);
         return "index";
     }
