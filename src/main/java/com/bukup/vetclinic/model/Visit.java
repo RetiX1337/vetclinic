@@ -44,7 +44,7 @@ public class Visit
 	@Column(name = "result")
 	private String result;
 
-	@OneToOne(mappedBy = "visit")
-	@JoinColumn(name = "visit_id")
+	@OneToOne
+	@JoinColumn(name = "time_slot_id")
 	private TimeSlot timeSlot;
 }

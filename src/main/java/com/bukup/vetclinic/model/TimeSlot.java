@@ -26,8 +26,7 @@ public class TimeSlot
 	@Column(name = "id", nullable = false)
 	private Long id;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "visit_id")
+	@OneToOne(mappedBy = "timeSlot", cascade = CascadeType.ALL)
 	private Visit visit;
 
 	@Column(name = "start_time")

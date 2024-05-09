@@ -20,9 +20,9 @@ public class Visitor
 	@MapsId
 	private User user;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
 	private Set<Pet> pets;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "visitor", cascade = CascadeType.ALL)
 	private Set<Visit> visits;
 }

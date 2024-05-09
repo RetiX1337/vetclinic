@@ -23,8 +23,7 @@ public class Employee
 	@OneToMany(mappedBy = "employee")
 	private Set<Visit> visits;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "schedule_id")
+	@OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
 	private Schedule schedule;
 
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REFRESH })
