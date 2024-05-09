@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <title>Login Form</title>
+</head>
+<body>
+<div class="col-md-offset-2">
+    <h2>Login User</h2>
+</div>
+<form class="form-horizontal" th:action="@{/login}" th:object="${loginRequest}" method="post">
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="email">Email:</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="text" th:field="*{email}" id="email"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="password">Password:</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="password" th:field="*{password}" id="password"/>
+            <div class="text-danger" th:if="${exceptionMessage != null}" th:text="${exceptionMessage}"></div>
+        </div>
+    </div>
+    <div class="col-sm-offset-2 col-sm-6">
+        <input class="btn btn-info" type="submit" value="Login"/>
+        <input class="btn btn" type="reset" value="Clear"/>
+    </div>
+</form>
+<div>
+    <a class="col-sm-offset-2 col-sm-6" th:href="@{/register}">Don't have an account yet? Register now!</a>
+</div>
+</body>
+</html>
