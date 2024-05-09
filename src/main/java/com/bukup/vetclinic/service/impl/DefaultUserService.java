@@ -1,8 +1,10 @@
 package com.bukup.vetclinic.service.impl;
 
 import com.bukup.vetclinic.model.User;
+import com.bukup.vetclinic.model.Visitor;
 import com.bukup.vetclinic.repository.UserRepository;
 import com.bukup.vetclinic.service.UserService;
+import com.bukup.vetclinic.service.VisitorService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -14,15 +16,26 @@ import java.util.Optional;
 @Service
 public class DefaultUserService implements UserService {
     private final UserRepository userRepository;
+    private final VisitorService visitorService;
 
-    public DefaultUserService(UserRepository userRepository) {
+    public DefaultUserService(UserRepository userRepository, VisitorService visitorService) {
         this.userRepository = userRepository;
+        this.visitorService = visitorService;
     }
 
     @Override
     public User create(User user) {
         checkIfUserExistsByEmail(user.getEmail());
         return userRepository.save(user);
+    }
+
+    @Override
+    public User createVisitorUser(User user) {
+        final User savedUser = create(user);
+        final Visitor visitor = new Visitor();
+        visitor.setUser(savedUser);
+        visitorService.create(visitor);
+        return savedUser;
     }
 
     @Override

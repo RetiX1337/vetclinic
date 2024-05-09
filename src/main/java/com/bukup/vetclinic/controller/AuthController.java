@@ -80,7 +80,7 @@ public class AuthController {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(new HashSet<>(Set.of(roleService.readByName("USER"))));
-        userService.create(user);
+        userService.createVisitorUser(user);
         return "redirect:/login";
     }
 }
