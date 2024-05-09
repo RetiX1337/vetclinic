@@ -1,6 +1,5 @@
 package com.bukup.vetclinic.security.service;
 
-import com.bukup.vetclinic.model.Role;
 import com.bukup.vetclinic.model.User;
 import com.bukup.vetclinic.security.model.UserDetailsImpl;
 import com.bukup.vetclinic.service.UserService;
@@ -11,7 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
