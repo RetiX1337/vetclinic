@@ -1,10 +1,10 @@
 package com.bukup.vetclinic.model;
 
-import java.util.Set;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Setter
@@ -22,5 +22,5 @@ public class Schedule
 	private Employee employee;
 
 	@OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
-	private Set<ScheduleDay> scheduleDays;
+	private List<ScheduleDay> scheduleDays;
 }

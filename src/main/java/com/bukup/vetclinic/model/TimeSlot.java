@@ -30,10 +30,10 @@ public class TimeSlot
 	private Visit visit;
 
 	@Column(name = "start_time")
-	private LocalDateTime start_time;
+	private LocalDateTime startTime;
 
 	@Column(name = "end_time")
-	private LocalDateTime end_time;
+	private LocalDateTime endTime;
 
 	@ManyToOne
 	@JoinColumn(name = "schedule_day_id")
