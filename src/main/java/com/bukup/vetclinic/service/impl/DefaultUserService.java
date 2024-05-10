@@ -66,8 +66,7 @@ public class DefaultUserService implements UserService {
 
     @Override
     public List<User> getAll() {
-        List<User> users = userRepository.findAll();
-        return users.isEmpty() ? new ArrayList<>() : users;
+        return userRepository.findAll();
     }
 
     private void checkIfUserExistsByEmail(String email) {

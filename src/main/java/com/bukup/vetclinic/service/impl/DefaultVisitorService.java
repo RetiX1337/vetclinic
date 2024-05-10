@@ -47,8 +47,7 @@ public class DefaultVisitorService implements VisitorService {
 
     @Override
     public List<Visitor> getAll() {
-        final List<Visitor> visitors = visitorRepository.findAll();
-        return visitors.isEmpty() ? new ArrayList<>() : visitors;
+        return visitorRepository.findAll();
     }
 
     private void checkIfVisitorExistsByUser(User user) {
