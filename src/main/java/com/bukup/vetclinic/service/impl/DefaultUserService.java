@@ -7,12 +7,13 @@ import com.bukup.vetclinic.service.UserService;
 import com.bukup.vetclinic.service.VisitorService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
 @Service
 public class DefaultUserService implements UserService {
     private final UserRepository userRepository;

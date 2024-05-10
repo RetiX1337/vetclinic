@@ -6,15 +6,15 @@ import com.bukup.vetclinic.model.ScheduleDay;
 import com.bukup.vetclinic.model.TimeSlot;
 import com.bukup.vetclinic.repository.ScheduleRepository;
 import com.bukup.vetclinic.service.ScheduleService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+@Transactional
 @Service
 public class DefaultScheduleService implements ScheduleService {
     private final ScheduleRepository scheduleRepository;

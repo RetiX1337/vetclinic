@@ -5,10 +5,12 @@ import com.bukup.vetclinic.repository.CategoryRepository;
 import com.bukup.vetclinic.service.CategoryService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Transactional
 @Service
 public class DefaultCategoryService implements CategoryService {
     private final CategoryRepository categoryRepository;

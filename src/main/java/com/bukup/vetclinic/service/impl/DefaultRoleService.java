@@ -5,10 +5,12 @@ import com.bukup.vetclinic.repository.RoleRepository;
 import com.bukup.vetclinic.service.RoleService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Transactional
 @Service
 public class DefaultRoleService implements RoleService {
     private final RoleRepository roleRepository;

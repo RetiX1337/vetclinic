@@ -5,10 +5,12 @@ import com.bukup.vetclinic.repository.ServiceTypeRepository;
 import com.bukup.vetclinic.service.ServiceTypeService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Transactional
 @Service
 public class DefaultServiceTypeService implements ServiceTypeService {
     private final ServiceTypeRepository serviceTypeRepository;
