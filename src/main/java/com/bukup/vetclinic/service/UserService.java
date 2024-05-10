@@ -1,13 +1,17 @@
 package com.bukup.vetclinic.service;
 
+import com.bukup.vetclinic.model.Employee;
 import com.bukup.vetclinic.model.User;
+import com.bukup.vetclinic.model.Visitor;
 
 import java.util.List;
 
 public interface UserService {
     User create(User role);
 
-    User createVisitorUser(User user);
+    Visitor createVisitorUser(Visitor visitor);
+
+    Employee createEmployeeUser(Employee employee);
 
     User findById(long id);
 

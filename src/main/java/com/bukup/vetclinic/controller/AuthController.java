@@ -2,6 +2,7 @@ package com.bukup.vetclinic.controller;
 
 import com.bukup.vetclinic.dto.LoginRequest;
 import com.bukup.vetclinic.model.User;
+import com.bukup.vetclinic.model.Visitor;
 import com.bukup.vetclinic.security.service.AuthService;
 import com.bukup.vetclinic.service.RoleService;
 import com.bukup.vetclinic.service.UserService;
@@ -80,7 +81,9 @@ public class AuthController {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(new HashSet<>(Set.of(roleService.readByName("USER"))));
-        userService.createVisitorUser(user);
+        Visitor visitor = new Visitor();
+        visitor.setUser(user);
+        userService.createVisitorUser(visitor);
         return "redirect:/login";
     }
 }

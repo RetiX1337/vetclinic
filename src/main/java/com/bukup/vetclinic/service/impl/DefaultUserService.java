@@ -1,8 +1,10 @@
 package com.bukup.vetclinic.service.impl;
 
+import com.bukup.vetclinic.model.Employee;
 import com.bukup.vetclinic.model.User;
 import com.bukup.vetclinic.model.Visitor;
 import com.bukup.vetclinic.repository.UserRepository;
+import com.bukup.vetclinic.service.EmployeeService;
 import com.bukup.vetclinic.service.UserService;
 import com.bukup.vetclinic.service.VisitorService;
 import jakarta.persistence.EntityExistsException;
@@ -18,10 +20,13 @@ import java.util.Optional;
 public class DefaultUserService implements UserService {
     private final UserRepository userRepository;
     private final VisitorService visitorService;
+    private final EmployeeService employeeService;
 
-    public DefaultUserService(UserRepository userRepository, VisitorService visitorService) {
+    public DefaultUserService(UserRepository userRepository, VisitorService visitorService,
+                              EmployeeService employeeService) {
         this.userRepository = userRepository;
         this.visitorService = visitorService;
+        this.employeeService = employeeService;
     }
 
     @Override
@@ -31,12 +36,15 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public User createVisitorUser(User user) {
-        final User savedUser = create(user);
-        final Visitor visitor = new Visitor();
-        visitor.setUser(savedUser);
-        visitorService.create(visitor);
-        return savedUser;
+    public Visitor createVisitorUser(Visitor visitor) {
+        create(visitor.getUser());
+        return visitorService.create(visitor);
+    }
+
+    @Override
+    public Employee createEmployeeUser(Employee employee) {
+        create(employee.getUser());
+        return employeeService.create(employee);
     }
 
     @Override
