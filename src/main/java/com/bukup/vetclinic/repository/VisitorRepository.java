@@ -5,5 +5,4 @@ import com.bukup.vetclinic.model.Visitor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface VisitorRepository extends JpaRepository<Visitor, Long> {
-    boolean existsByUser(final User user);
 }

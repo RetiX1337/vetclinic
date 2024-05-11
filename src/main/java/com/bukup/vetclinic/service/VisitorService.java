@@ -15,4 +15,6 @@ public interface VisitorService {
     void delete(long id);
 
     List<Visitor> getAll();
+
+    boolean existsByUserId(long userId);
 }

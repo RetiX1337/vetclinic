@@ -27,12 +27,6 @@ public class PetController {
         this.visitorService = visitorService;
     }
 
-    @GetMapping
-    public String getAllPets(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        model.addAttribute("pets", petService.getAllByOwner(userDetails.getId()));
-        return "pets/pets";
-    }
-
     @GetMapping("/{id}")
     public String getPet(@PathVariable Long id, Model model) {
         model.addAttribute("pet", petService.findById(id));

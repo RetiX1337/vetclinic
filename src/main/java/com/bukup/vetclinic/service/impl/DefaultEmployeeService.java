@@ -3,6 +3,7 @@ package com.bukup.vetclinic.service.impl;
 import com.bukup.vetclinic.model.Employee;
 import com.bukup.vetclinic.model.User;
 import com.bukup.vetclinic.repository.EmployeeRepository;
+import com.bukup.vetclinic.repository.VisitorRepository;
 import com.bukup.vetclinic.service.EmployeeService;
 import com.bukup.vetclinic.service.ScheduleService;
 import jakarta.persistence.EntityExistsException;
@@ -16,16 +17,19 @@ import java.util.List;
 @Service
 public class DefaultEmployeeService implements EmployeeService {
     private final EmployeeRepository employeeRepository;
+    private final VisitorRepository visitorRepository;
     private final ScheduleService scheduleService;
 
-    public DefaultEmployeeService(final EmployeeRepository employeeRepository, ScheduleService scheduleService) {
+    public DefaultEmployeeService(final EmployeeRepository employeeRepository, VisitorRepository visitorRepository,
+                                  ScheduleService scheduleService) {
         this.employeeRepository = employeeRepository;
         this.scheduleService = scheduleService;
+        this.visitorRepository = visitorRepository;
     }
 
     @Override
     public Employee create(Employee employee) {
-        checkIfEmployeeExistsByUser(employee.getUser());
+        checkIfEmployeeExistsByUser(employee.getUser().getId());
         scheduleService.create(employee.getSchedule());
         return employeeRepository.save(employee);
     }
@@ -55,9 +59,14 @@ public class DefaultEmployeeService implements EmployeeService {
         return employeeRepository.findAll();
     }
 
-    private void checkIfEmployeeExistsByUser(User user) {
-        if (employeeRepository.existsByUser(user)) {
-            throw new EntityExistsException("Employee with user " + user.getId() + " already exists");
+    @Override
+    public boolean existsByUserId(long userId) {
+        return employeeRepository.existsById(userId);
+    }
+
+    private void checkIfEmployeeExistsByUser(long userId) {
+        if (existsByUserId(userId) || visitorRepository.existsById(userId)) {
+            throw new EntityExistsException("Employee with user " + userId + " already exists");
         }
     }
 }

@@ -15,4 +15,6 @@ public interface EmployeeService {
     void delete(long id);
 
     List<Employee> getAll();
+
+    boolean existsByUserId(long userId);
 }
