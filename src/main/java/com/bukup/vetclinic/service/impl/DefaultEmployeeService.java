@@ -26,7 +26,7 @@ public class DefaultEmployeeService implements EmployeeService {
     @Override
     public Employee create(Employee employee) {
         checkIfEmployeeExistsByUser(employee.getUser());
-        scheduleService.createSchedule(employee);
+        scheduleService.create(employee.getSchedule());
         return employeeRepository.save(employee);
     }
 

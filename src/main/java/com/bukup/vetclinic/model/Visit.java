@@ -2,16 +2,7 @@ package com.bukup.vetclinic.model;
 
 import java.util.Set;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,7 +17,12 @@ public class Visit
 	@Column(name = "id", nullable = false)
 	private Long id;
 
-	@ManyToMany(mappedBy = "visits")
+	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinTable(
+			name = "visits_pets",
+			joinColumns = { @JoinColumn(name = "visit_id") },
+			inverseJoinColumns = { @JoinColumn(name = "pet_id") }
+	)
 	private Set<Pet> pets;
 
 	@ManyToOne

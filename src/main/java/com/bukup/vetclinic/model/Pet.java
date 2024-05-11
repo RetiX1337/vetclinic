@@ -31,11 +31,11 @@ public class Pet
 	@JoinColumn(name = "owner_id", nullable = false)
 	private Visitor owner;
 
-	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinTable(
-			name = "pets_visits",
-			joinColumns = { @JoinColumn(name = "pet_id") },
-			inverseJoinColumns = { @JoinColumn(name = "visit_id") }
-	)
+	@ManyToMany(mappedBy = "pets")
 	private Set<Visit> visits;
+
+	@Override
+	public String toString() {
+		return name + " " + animalType;
+	}
 }
