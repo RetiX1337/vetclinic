@@ -12,6 +12,7 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
+<header th:replace="fragments/header :: header"></header>
 <div class="container">
     <h2 class="my-4 text-center">Schedule for Employee: <span th:text="${employee.user.getLastName() + employee.user.getLastName()}"></span></h2>
     <h4 class="my-4 text-center">Book visit for: <span th:text="${pets}"></span>, Service: <span th:text="${serviceType.getName()}"></span></h4>
