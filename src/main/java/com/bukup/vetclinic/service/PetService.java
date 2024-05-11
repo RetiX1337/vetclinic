@@ -1,6 +1,7 @@
 package com.bukup.vetclinic.service;
 
 import com.bukup.vetclinic.model.Pet;
+import com.bukup.vetclinic.model.Visitor;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface PetService {
     void delete(long id);
 
     List<Pet> getAll();
+
+    List<Pet> getAllByOwner(Long ownerId);
 }
