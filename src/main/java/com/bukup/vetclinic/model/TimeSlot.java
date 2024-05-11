@@ -36,6 +36,6 @@ public class TimeSlot
 	private LocalDateTime endTime;
 
 	@ManyToOne
-	@JoinColumn(name = "schedule_day_id")
-	private ScheduleDay scheduleDay;
+	@JoinColumn(name = "schedule_id")
+	private Schedule schedule;
 }
