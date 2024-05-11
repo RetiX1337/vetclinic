@@ -2,6 +2,7 @@ package com.bukup.vetclinic.service.impl;
 
 import com.bukup.vetclinic.model.User;
 import com.bukup.vetclinic.model.Visitor;
+import com.bukup.vetclinic.repository.EmployeeRepository;
 import com.bukup.vetclinic.repository.VisitorRepository;
 import com.bukup.vetclinic.service.VisitorService;
 import jakarta.persistence.EntityExistsException;
@@ -15,14 +16,16 @@ import java.util.List;
 @Service
 public class DefaultVisitorService implements VisitorService {
     private final VisitorRepository visitorRepository;
+    private final EmployeeRepository employeeRepository;
 
-    public DefaultVisitorService(final VisitorRepository visitorRepository) {
+    public DefaultVisitorService(final VisitorRepository visitorRepository, final EmployeeRepository employeeRepository) {
         this.visitorRepository = visitorRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     @Override
     public Visitor create(Visitor visitor) {
-        checkIfVisitorExistsByUser(visitor.getUser());
+        checkIfVisitorExistsByUser(visitor.getUser().getId());
         return visitorRepository.save(visitor);
     }
 
@@ -51,9 +54,15 @@ public class DefaultVisitorService implements VisitorService {
         return visitorRepository.findAll();
     }
 
-    private void checkIfVisitorExistsByUser(User user) {
-        if (visitorRepository.existsByUser(user)) {
-            throw new EntityExistsException("Visitor with user " + user.getId() + " already exists");
+
+    @Override
+    public boolean existsByUserId(long userId) {
+        return visitorRepository.existsById(userId);
+    }
+
+    private void checkIfVisitorExistsByUser(long userId) {
+        if (existsByUserId(userId) || employeeRepository.existsById(userId)) {
+            throw new EntityExistsException("Visitor with user " + userId + " already exists");
         }
     }
 }
