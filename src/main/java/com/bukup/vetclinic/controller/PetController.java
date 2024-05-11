@@ -45,6 +45,12 @@ public class PetController {
         return "pets/newPet";
     }
 
+    @PostMapping("/{id}/delete")
+    public String deletePet(@PathVariable Long id) {
+        petService.delete(id);
+        return "redirect:/pets";
+    }
+
     @PostMapping
     public String createPet(@ModelAttribute("pet") PetRequest petRequest,
                             @AuthenticationPrincipal UserDetailsImpl userDetails) {

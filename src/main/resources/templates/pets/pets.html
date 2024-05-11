@@ -29,9 +29,12 @@
                     <td th:text="${pet.name}"></td>
                     <td th:text="${pet.animalType}"></td>
                     <td th:text="${pet.dateOfBirth}"></td>
-                    <td>
-                        <a th:href="@{'/pets/' + ${pet.id}}" class="btn btn-info">View</a>
-                        <a th:href="@{'/pets/' + ${pet.id} + '/edit'}" class="btn btn-primary">Edit</a>
+                    <td class="d-flex align-items-center">
+                        <a th:href="@{'/pets/' + ${pet.id}}" class="btn btn-info m-1">View</a>
+                        <a th:href="@{'/pets/' + ${pet.id} + '/edit'}" class="btn btn-primary m-1">Edit</a>
+                        <form th:action="@{'/pets/' + ${pet.id} + '/delete'}" th:method="post">
+                            <input class="btn btn-danger m-1" type="submit" value="Delete" />
+                        </form>
                     </td>
                 </tr>
                 </tbody>
