@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "visits")
-public class Visit
+public class Visit implements Comparable<Visit>
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,4 +43,9 @@ public class Visit
 	@OneToOne
 	@JoinColumn(name = "time_slot_id")
 	private TimeSlot timeSlot;
+
+	@Override
+	public int compareTo(Visit other) {
+		return this.timeSlot.getStartTime().compareTo(other.timeSlot.getStartTime());
+	}
 }

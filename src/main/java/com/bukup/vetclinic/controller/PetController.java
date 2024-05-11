@@ -2,6 +2,7 @@ package com.bukup.vetclinic.controller;
 
 import com.bukup.vetclinic.dto.PetRequest;
 import com.bukup.vetclinic.model.Pet;
+import com.bukup.vetclinic.model.Visit;
 import com.bukup.vetclinic.model.Visitor;
 import com.bukup.vetclinic.security.model.UserDetailsImpl;
 import com.bukup.vetclinic.service.PetService;
@@ -12,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Controller
 @RequestMapping("/pets")

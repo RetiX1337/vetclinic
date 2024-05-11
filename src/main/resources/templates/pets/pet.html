@@ -28,7 +28,8 @@
                     <th>Date of Birth</th>
                     <td th:text="${pet.dateOfBirth}"></td>
                 </tr>
-            </table><h3 class="mt-4">Visits</h3>
+            </table>
+            <h3 class="mt-4">Visits</h3>
             <div th:if="${pet.visits.isEmpty()}">
                 <p>No visits yet.</p>
             </div>
@@ -37,12 +38,16 @@
                     <thead>
                     <tr>
                         <th>Date</th>
+                        <th>Employee Category</th>
+                        <th>Service Type</th>
                         <th>Result</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="visit : ${pet.visits}">
+                    <tr th:each="visit : ${#lists.sort(pet.visits)}">
                         <td th:text="${visit.timeSlot.startTime}"></td>
+                        <td th:text="${visit.serviceType.category.type}"></td>
+                        <td th:text="${visit.serviceType.name}"></td>
                         <td th:text="${visit.result != null ? visit.result : 'No result yet'}"></td>
                     </tr>
                     </tbody>
