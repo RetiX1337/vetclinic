@@ -17,4 +17,6 @@ public interface EmployeeService {
     List<Employee> getAll();
 
     boolean existsByUserId(long userId);
+
+    List<Employee> getAllByServiceType(final String serviceName);
 }

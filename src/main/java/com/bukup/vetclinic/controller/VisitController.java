@@ -41,6 +41,8 @@ public class VisitController {
         this.scheduleService = scheduleService;
     }
 
+
+
     @GetMapping("/book")
     public String getSchedule(Model model,
                               @RequestParam(value = "employeeId") long employeeId,
