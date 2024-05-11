@@ -34,8 +34,8 @@ public class Visit
 	private Visitor visitor;
 
 	@ManyToOne
-	@JoinColumn(name = "category_id")
-	private Category category;
+	@JoinColumn(name = "service_type_id")
+	private ServiceType serviceType;
 
 	@Column(name = "result")
 	private String result;

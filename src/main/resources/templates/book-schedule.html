@@ -14,7 +14,7 @@
 <body>
 <div class="container">
     <h2 class="my-4 text-center">Schedule for Employee: <span th:text="${employee.user.getLastName() + employee.user.getLastName()}"></span></h2>
-    <h4 class="my-4 text-center">Book visit for: <span th:text="${pets}"></span>, Category: <span th:text="${category.getType()}"></span></h4>
+    <h4 class="my-4 text-center">Book visit for: <span th:text="${pets}"></span>, Service: <span th:text="${serviceType.getName()}"></span></h4>
     <div class="row">
         <div class="col" th:each="day : ${week}">
             <h3 class="text-center" th:text="${day}"></h3>
@@ -32,7 +32,7 @@
                         <form th:action="@{/book}" method="post" th:object="${concreteVisitRequest}">
                             <input type="hidden" th:name="startTime" th:value="${entry.value.startTime}" />
                             <input type="hidden" th:name="endTime" th:value="${entry.value.endTime}" />
-                            <input type="hidden" th:name="categoryId" th:value="${category.getId()}" />
+                            <input type="hidden" th:name="serviceTypeId" th:value="${serviceType.getId()}" />
                             <input type="hidden" th:name="employeeId" th:value="${employee.getUserId()}" />
                             <input type="hidden" th:name="petIds" th:value="${petIds}" />
                             <button type="submit" class="btn btn-primary" th:disabled="${schedule.containsTimeSlot(entry.value.startTime, entry.value.endTime)}">Book</button>
@@ -44,8 +44,9 @@
         </div>
     </div>
     <div class="d-flex justify-content-between">
-        <button th:data-employeeId="${employee.getUserId()}" th:data-categoryId="${category.getId()}" th:data-pets="${petIds}" th:data-week="${weekNumber - 1}" class="btn btn-secondary" th:if="${weekNumber > 1}" onclick="window.location.href='?employeeId=' + this.getAttribute('data-employeeId') + '&categoryId=' + this.getAttribute('data-categoryId') + '&pets=' + this.getAttribute('data-pets') + '&week=' + this.getAttribute('data-week')">Previous Week</button>
-        <button th:data-employeeId="${employee.getUserId()}" th:data-categoryId="${category.getId()}" th:data-pets="${petIds}" th:data-week="${weekNumber + 1}" class="btn btn-secondary" th:if="${weekNumber < 4}" onclick="window.location.href='?employeeId=' + this.getAttribute('data-employeeId') + '&categoryId=' + this.getAttribute('data-categoryId') + '&pets=' + this.getAttribute('data-pets') + '&week=' + this.getAttribute('data-week')">Next Week</button>    </div>
+        <button th:data-employeeId="${employee.getUserId()}" th:data-serviceTypeId="${serviceType.getId()}" th:data-pets="${petIds}" th:data-week="${weekNumber - 1}" class="btn btn-secondary" th:if="${weekNumber > 1}" onclick="window.location.href='?employeeId=' + this.getAttribute('data-employeeId') + '&serviceTypeId=' + this.getAttribute('data-serviceTypeId') + '&pets=' + this.getAttribute('data-pets') + '&week=' + this.getAttribute('data-week')">Previous Week</button>
+        <button th:data-employeeId="${employee.getUserId()}" th:data-serviceTypeId="${serviceType.getId()}" th:data-pets="${petIds}" th:data-week="${weekNumber + 1}" class="btn btn-secondary" th:if="${weekNumber < 4}" onclick="window.location.href='?employeeId=' + this.getAttribute('data-employeeId') + '&serviceTypeId=' + this.getAttribute('data-serviceTypeId') + '&pets=' + this.getAttribute('data-pets') + '&week=' + this.getAttribute('data-week')">Next Week</button>
+    </div>
 </div>
 </body>
 </html>

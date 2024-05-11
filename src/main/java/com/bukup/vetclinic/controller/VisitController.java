@@ -25,17 +25,17 @@ import java.util.stream.IntStream;
 public class VisitController {
     private final EmployeeService employeeService;
     private final VisitorService visitorService;
-    private final CategoryService categoryService;
+    private final ServiceTypeService serviceTypeService;
     private final VisitService visitService;
     private final PetService petService;
     private final ScheduleService scheduleService;
 
     public VisitController(EmployeeService employeeService, VisitorService visitorService,
-                           CategoryService categoryService, VisitService visitService, PetService petService,
+                           ServiceTypeService serviceTypeService, VisitService visitService, PetService petService,
                            ScheduleService scheduleService) {
         this.employeeService = employeeService;
         this.visitorService = visitorService;
-        this.categoryService = categoryService;
+        this.serviceTypeService = serviceTypeService;
         this.visitService = visitService;
         this.petService = petService;
         this.scheduleService = scheduleService;
@@ -44,12 +44,12 @@ public class VisitController {
     @GetMapping("/book")
     public String getSchedule(Model model,
                               @RequestParam(value = "employeeId") long employeeId,
-                              @RequestParam(value = "categoryId") long categoryId,
+                              @RequestParam(value = "serviceTypeId") long serviceTypeId,
                               @RequestParam(value = "pets") String petIds,
                               @RequestParam(value = "week") int weekNumber) {
         validateWeekNumber(weekNumber);
         List<Pet> pets = getPets(petIds);
-        Category category = getCategory(categoryId);
+        ServiceType serviceType = getServiceType(serviceTypeId);
         Employee employee = getEmployee(employeeId);
         Schedule schedule = employee.getSchedule();
         List<LocalDate> week = getWeekDates(weekNumber);
@@ -61,7 +61,7 @@ public class VisitController {
         model.addAttribute("week", week);
         model.addAttribute("weekNumber", weekNumber);
         model.addAttribute("employee", employee);
-        model.addAttribute("category", category);
+        model.addAttribute("serviceType", serviceType);
         model.addAttribute("pets", pets);
         model.addAttribute("petIds", petIds);
         return "book-schedule";
@@ -97,8 +97,8 @@ public class VisitController {
                 .collect(Collectors.toList());
     }
 
-    private Category getCategory(long categoryId) {
-        return categoryService.findById(categoryId);
+    private ServiceType getServiceType(long serviceTypeId) {
+        return serviceTypeService.findById(serviceTypeId);
     }
 
     private Employee getEmployee(long employeeId) {
@@ -132,7 +132,7 @@ public class VisitController {
         visit.setPets(visitRequest.getPetIds().stream()
                 .map(petService::findById)
                 .collect(Collectors.toSet()));
-        visit.setCategory(categoryService.findById(visitRequest.getCategoryId()));
+        visit.setServiceType(serviceTypeService.findById(visitRequest.getServiceTypeId()));
         return visit;
     }
 

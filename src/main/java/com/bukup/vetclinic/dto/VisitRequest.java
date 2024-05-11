@@ -11,7 +11,7 @@ import java.util.List;
 public class VisitRequest {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private long categoryId;
+    private long serviceTypeId;
     private long employeeId;
     private List<Long> petIds;
 
