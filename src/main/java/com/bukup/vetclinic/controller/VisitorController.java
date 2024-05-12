@@ -5,9 +5,11 @@ import com.bukup.vetclinic.dto.VisitorRequest;
 import com.bukup.vetclinic.model.User;
 import com.bukup.vetclinic.model.Visitor;
 import com.bukup.vetclinic.service.VisitorService;
+import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -33,7 +35,13 @@ public class VisitorController {
     @PreAuthorize("hasAuthority('ADMIN') || authentication.principal.id == #id")
     @PostMapping("/{id}")
     public String updateVisitor(@PathVariable Long id,
-                                @ModelAttribute("visitor") VisitorRequest visitorRequest) {
+                                @Valid @ModelAttribute("visitor") VisitorRequest visitorRequest,
+                                BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("visitor", visitorRequest);
+            return "visitors/editVisitor";
+        }
+
         final Visitor visitor = visitorService.findById(id);
         final User user = userMapper.mapRequestToUserUpdate(visitorRequest.getUserRequest(), visitor.getUser());
         visitor.setUser(user);

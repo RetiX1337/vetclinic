@@ -2,6 +2,8 @@ package com.bukup.vetclinic.dto;
 
 import com.bukup.vetclinic.model.Category;
 import com.bukup.vetclinic.model.Employee;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +13,11 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class EmployeeRequest {
+    @Valid
+    @NotNull
     private UserRequest userRequest;
+    @Valid
+    @NotNull
     private ScheduleRequest scheduleRequest;
     private List<Long> categoryIds;
 

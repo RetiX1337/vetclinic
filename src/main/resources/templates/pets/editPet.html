@@ -20,14 +20,20 @@
         <div class="mb-3">
           <label for="name" class="form-label">Name:</label>
           <input type="text" class="form-control" id="name" th:field="*{name}">
+          <small class="form-text text-muted" th:if="${#fields.hasErrors('name')}"
+                 th:errors="*{name}"></small>
         </div>
         <div class="mb-3">
           <label for="animalType" class="form-label">Type:</label>
           <input type="text" class="form-control" id="animalType" th:field="*{animalType}">
+          <small class="form-text text-muted" th:if="${#fields.hasErrors('animalType')}"
+                 th:errors="*{animalType}"></small>
         </div>
         <div class="mb-3">
           <label for="dateOfBirth" class="form-label">Date of Birth:</label>
           <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}">
+          <small class="form-text text-muted" th:if="${#fields.hasErrors('dateOfBirth')}"
+                 th:errors="*{dateOfBirth}"></small>
         </div>
         <div class="mb-3">
           <input type="submit" class="btn btn-primary" value="Update Pet">

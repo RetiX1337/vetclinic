@@ -9,9 +9,11 @@ import com.bukup.vetclinic.model.User;
 import com.bukup.vetclinic.service.CategoryService;
 import com.bukup.vetclinic.service.EmployeeService;
 import com.bukup.vetclinic.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
@@ -52,7 +54,14 @@ public class EmployeeController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
-    public String createEmployee(@ModelAttribute("employee") EmployeeRequest employeeRequest) {
+    public String createEmployee(@Valid @ModelAttribute("employee") EmployeeRequest employeeRequest,
+                                 BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute(result.getAllErrors());
+            model.addAttribute("employee", employeeRequest);
+            model.addAttribute("categories", categoryService.getAll());
+            return "employees/newEmployee";
+        }
         final Employee employee = new Employee();
         final User user = userMapper.mapRequestToUser(employeeRequest.getUserRequest());
         employee.setUser(user);
@@ -80,7 +89,15 @@ public class EmployeeController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/{id}")
-    public String updateEmployee(@PathVariable Long id, @ModelAttribute("employee") EmployeeRequest employeeRequest) {
+    public String updateEmployee(@PathVariable Long id,
+                                 @Valid @ModelAttribute("employee") EmployeeRequest employeeRequest,
+                                 BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute(result.getAllErrors());
+            model.addAttribute("employee", employeeRequest);
+            model.addAttribute("categories", categoryService.getAll());
+            return "employees/editEmployee";
+        }
         final Employee employee = employeeService.findById(id);
         final User user = userMapper.mapRequestToUserUpdate(employeeRequest.getUserRequest(), employee.getUser());
         employee.setUser(user);

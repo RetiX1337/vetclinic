@@ -6,27 +6,22 @@ import com.bukup.vetclinic.dto.UserRequest;
 import com.bukup.vetclinic.model.User;
 import com.bukup.vetclinic.model.Visitor;
 import com.bukup.vetclinic.security.service.AuthService;
-import com.bukup.vetclinic.service.RoleService;
 import com.bukup.vetclinic.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Controller
 public class AuthController {
@@ -74,8 +69,9 @@ public class AuthController {
 
     @PreAuthorize("isAnonymous()")
     @PostMapping("/register")
-    public String register(@Validated @ModelAttribute("user") UserRequest userRequest, BindingResult result) {
+    public String register(@Valid @ModelAttribute("user") UserRequest userRequest, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("user", userRequest);
             return "register-form";
         }
         final User user = userMapper.mapRequestToUser(userRequest);

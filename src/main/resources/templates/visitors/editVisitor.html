@@ -20,30 +20,38 @@
                 <div class="mb-3">
                     <label for="firstName" class="form-label">First Name:</label>
                     <input type="text" class="form-control" id="firstName" th:field="*{userRequest.firstName}">
+                    <small class="form-text text-muted" th:if="${#fields.hasErrors('userRequest.firstName')}"
+                           th:errors="*{userRequest.firstName}"></small>
                 </div>
                 <div class="mb-3">
                     <label for="lastName" class="form-label">Last Name:</label>
                     <input type="text" class="form-control" id="lastName" th:field="*{userRequest.lastName}">
+                    <small class="form-text text-muted" th:if="${#fields.hasErrors('userRequest.lastName')}"
+                           th:errors="*{userRequest.lastName}"></small>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email:</label>
                     <input type="email" class="form-control" id="email" th:field="*{userRequest.email}">
+                    <small class="form-text text-muted" th:if="${#fields.hasErrors('userRequest.email')}"
+                           th:errors="*{userRequest.email}"></small>
                 </div>
                 <div class="mb-3">
                     <label for="address" class="form-label">Address:</label>
                     <input type="text" class="form-control" id="address" th:field="*{userRequest.address}">
+                    <small class="form-text text-muted" th:if="${#fields.hasErrors('userRequest.address')}"
+                           th:errors="*{userRequest.address}"></small>
                 </div>
                 <div class="mb-3">
                     <label for="phone" class="form-label">Phone:</label>
                     <input type="tel" class="form-control" id="phone" th:field="*{userRequest.phone}">
+                    <small class="form-text text-muted" th:if="${#fields.hasErrors('userRequest.phone')}"
+                           th:errors="*{userRequest.phone}"></small>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password:</label>
                     <input type="password" class="form-control" id="password" th:field="*{userRequest.password}">
-                </div>
-                <div class="mb-3">
-                    <input type="submit" class="btn btn-primary" value="Update Visitor">
-                    <input type="reset" class="btn btn-secondary" value="Clear">
+                    <small class="form-text text-muted" th:if="${#fields.hasErrors('userRequest.password')}"
+                           th:errors="*{userRequest.password}"></small>
                 </div>
             </form>
         </div>

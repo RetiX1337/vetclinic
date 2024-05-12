@@ -4,9 +4,11 @@ import com.bukup.vetclinic.dto.ServiceTypeRequest;
 import com.bukup.vetclinic.model.ServiceType;
 import com.bukup.vetclinic.service.CategoryService;
 import com.bukup.vetclinic.service.ServiceTypeService;
+import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -58,7 +60,13 @@ public class ServiceTypeController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
-    public String createServiceType(@ModelAttribute("serviceType") ServiceTypeRequest serviceTypeRequest) {
+    public String createServiceType(@Valid @ModelAttribute("serviceType") ServiceTypeRequest serviceTypeRequest,
+                                    BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("serviceType", serviceTypeRequest);
+            model.addAttribute("categories", categoryService.getAll());
+            return "services/newServiceType";
+        }
         final ServiceType serviceType = new ServiceType();
         serviceType.setName(serviceTypeRequest.getName());
         serviceType.setCategory(categoryService.findById(serviceTypeRequest.getCategoryId()));
@@ -81,7 +89,13 @@ public class ServiceTypeController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/{id}")
     public String updateServiceType(@PathVariable Long id,
-                                    @ModelAttribute("serviceType") ServiceTypeRequest serviceTypeRequest) {
+                                    @Valid @ModelAttribute("serviceType") ServiceTypeRequest serviceTypeRequest,
+                                    BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("serviceType", serviceTypeRequest);
+            model.addAttribute("categories", categoryService.getAll());
+            return "services/editServiceType";
+        }
         final ServiceType serviceType = serviceTypeService.findById(id);
         serviceType.setName(serviceTypeRequest.getName());
         serviceType.setCategory(categoryService.findById(serviceTypeRequest.getCategoryId()));

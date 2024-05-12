@@ -21,45 +21,65 @@
                 <div class="mb-3">
                     <label for="firstName" class="form-label">First Name:</label>
                     <input type="text" class="form-control" id="firstName" th:field="*{userRequest.firstName}">
+                    <small class="form-text text-muted" th:if="${#fields.hasErrors('userRequest.firstName')}"
+                           th:errors="*{userRequest.firstName}"></small>
                 </div>
                 <div class="mb-3">
                     <label for="lastName" class="form-label">Last Name:</label>
                     <input type="text" class="form-control" id="lastName" th:field="*{userRequest.lastName}">
+                    <small class="form-text text-muted" th:if="${#fields.hasErrors('userRequest.lastName')}"
+                           th:errors="*{userRequest.lastName}"></small>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email:</label>
                     <input type="email" class="form-control" id="email" th:field="*{userRequest.email}">
+                    <small class="form-text text-muted" th:if="${#fields.hasErrors('userRequest.email')}"
+                           th:errors="*{userRequest.email}"></small>
                 </div>
                 <div class="mb-3">
                     <label for="address" class="form-label">Address:</label>
                     <input type="text" class="form-control" id="address" th:field="*{userRequest.address}">
+                    <small class="form-text text-muted" th:if="${#fields.hasErrors('userRequest.address')}"
+                           th:errors="*{userRequest.address}"></small>
                 </div>
                 <div class="mb-3">
                     <label for="phone" class="form-label">Phone:</label>
                     <input type="tel" class="form-control" id="phone" th:field="*{userRequest.phone}">
+                    <small class="form-text text-muted" th:if="${#fields.hasErrors('userRequest.phone')}"
+                           th:errors="*{userRequest.phone}"></small>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password:</label>
                     <input type="password" class="form-control" id="password" th:field="*{userRequest.password}">
+                    <small class="form-text text-muted" th:if="${#fields.hasErrors('userRequest.password')}"
+                           th:errors="*{userRequest.password}"></small>
                 </div>
                 <!-- Schedule Details -->
                 <div class="mb-3">
                     <label for="dayStartTime" class="form-label">Day Start Time:</label>
-                    <input type="time" class="form-control" id="dayStartTime" th:field="*{scheduleRequest.dayStartTime}">
+                    <input type="time" class="form-control" id="dayStartTime"
+                           th:field="*{scheduleRequest.dayStartTime}">
+                    <small class="form-text text-muted" th:if="${#fields.hasErrors('scheduleRequest.dayStartTime')}"
+                           th:errors="*{scheduleRequest.dayStartTime}"></small>
                 </div>
                 <div class="mb-3">
                     <label for="dayEndTime" class="form-label">Day End Time:</label>
                     <input type="time" class="form-control" id="dayEndTime" th:field="*{scheduleRequest.dayEndTime}">
+                    <small class="form-text text-muted" th:if="${#fields.hasErrors('scheduleRequest.dayEndTime')}"
+                           th:errors="*{scheduleRequest.dayEndTime}"></small>
                 </div>
                 <div class="" th:each="category : ${categories}">
-                <div class="card mb-3 ms-3" >
-                    <div class="card-body">
-                        <h3 class="card-title text-center" th:text="${category}"></h3>
-                        <input type="checkbox" th:field="*{categoryIds}" th:value="${category.getId()}" th:id="${category}" />
-                        <label th:for="${category}"></label>
+                    <div class="card mb-3 ms-3">
+                        <div class="card-body">
+                            <h3 class="card-title text-center" th:text="${category}"></h3>
+                            <input type="checkbox" th:field="*{categoryIds}" th:value="${category.getId()}"
+                                   th:id="${category}"/>
+                            <label th:for="${category}"></label>
+                            <small class="form-text text-muted" th:if="${#fields.hasErrors('categoryIds')}"
+                                   th:errors="*{categoryIds}"></small>
+                        </div>
                     </div>
                 </div>
-            </div>
                 <!-- Submit Button -->
                 <div class="mb-3">
                     <input type="submit" class="btn btn-primary" value="Add Employee">

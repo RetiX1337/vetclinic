@@ -20,6 +20,8 @@
                 <div class="mb-3">
                     <label for="type" class="form-label">Type:</label>
                     <input type="text" class="form-control" id="type" th:field="*{type}">
+                    <small class="form-text text-muted" th:if="${#fields.hasErrors('type')}"
+                           th:errors="*{type}"></small>
                 </div>
                 <div class="mb-3">
                     <input type="submit" class="btn btn-primary" value="Update Category">

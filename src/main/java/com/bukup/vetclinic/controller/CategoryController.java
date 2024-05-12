@@ -3,9 +3,11 @@ package com.bukup.vetclinic.controller;
 import com.bukup.vetclinic.dto.CategoryRequest;
 import com.bukup.vetclinic.model.Category;
 import com.bukup.vetclinic.service.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -40,7 +42,13 @@ public class CategoryController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
-    public String createCategory(@ModelAttribute("category") CategoryRequest categoryRequest) {
+    public String createCategory(@Valid @ModelAttribute("category") CategoryRequest categoryRequest,
+                                 BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute(result.getAllErrors());
+            model.addAttribute("category", categoryRequest);
+            return "categories/newCategory";
+        }
         final Category category = new Category();
         category.setType(categoryRequest.getType());
         categoryService.create(category);
@@ -59,7 +67,13 @@ public class CategoryController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/{id}")
-    public String updateCategory(@PathVariable Long id, @ModelAttribute("category") CategoryRequest categoryRequest) {
+    public String updateCategory(@PathVariable Long id,
+                                 @Valid @ModelAttribute("category") CategoryRequest categoryRequest,
+                                 BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("category", categoryRequest);
+            return "categories/editCategory";
+        }
         final Category category = categoryService.findById(id);
         category.setType(categoryRequest.getType());
         categoryService.update(category);
