@@ -77,7 +77,7 @@ public class VisitController {
         scheduleService.update(employee.getSchedule());
         Visit visit = createVisit(visitRequest, visitor, employee, timeSlot);
         visitService.create(visit);
-        return "";
+        return "redirect:/profile/" + userDetails.getId();
     }
 
     private void validateWeekNumber(int weekNumber) {
