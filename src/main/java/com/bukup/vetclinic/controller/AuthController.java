@@ -1,6 +1,8 @@
 package com.bukup.vetclinic.controller;
 
+import com.bukup.vetclinic.controller.mapper.UserMapper;
 import com.bukup.vetclinic.dto.LoginRequest;
+import com.bukup.vetclinic.dto.UserRequest;
 import com.bukup.vetclinic.model.User;
 import com.bukup.vetclinic.model.Visitor;
 import com.bukup.vetclinic.security.service.AuthService;
@@ -31,15 +33,12 @@ public class AuthController {
     private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
     private final AuthService authService;
     private final UserService userService;
-    private final RoleService roleService;
-    private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
-    public AuthController(AuthService authService, UserService userService, RoleService roleService,
-                          PasswordEncoder passwordEncoder) {
+    public AuthController(AuthService authService, UserService userService, UserMapper userMapper) {
         this.userService = userService;
-        this.roleService = roleService;
-        this.passwordEncoder = passwordEncoder;
         this.authService = authService;
+        this.userMapper = userMapper;
     }
 
     @PreAuthorize("isAnonymous()")
@@ -68,19 +67,18 @@ public class AuthController {
     @PreAuthorize("isAnonymous()")
     @GetMapping("/register")
     public String getRegisterForm(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new UserRequest());
         return "register-form";
     }
 
 
     @PreAuthorize("isAnonymous()")
     @PostMapping("/register")
-    public String register(@Validated @ModelAttribute("user") User user, BindingResult result) {
+    public String register(@Validated @ModelAttribute("user") UserRequest userRequest, BindingResult result) {
         if (result.hasErrors()) {
             return "register-form";
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(new HashSet<>(Set.of(roleService.readByName("USER"))));
+        final User user = userMapper.mapRequestToUser(userRequest);
         Visitor visitor = new Visitor();
         visitor.setUser(user);
         userService.createVisitorUser(visitor);

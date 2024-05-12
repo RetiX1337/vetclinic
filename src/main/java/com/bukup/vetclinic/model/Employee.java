@@ -16,7 +16,7 @@ public class Employee
 	@Column(name = "user_id", nullable = false)
 	private Long userId;
 
-	@OneToOne(targetEntity = User.class)
+	@OneToOne(targetEntity = User.class, cascade = CascadeType.ALL)
 	@MapsId
 	private User user;
 
