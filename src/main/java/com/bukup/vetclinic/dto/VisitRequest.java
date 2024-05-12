@@ -9,10 +9,9 @@ import java.util.List;
 @Getter
 @Setter
 public class VisitRequest {
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private String delimitedTime;
     private long serviceTypeId;
     private long employeeId;
-    private List<Long> petIds;
+    private String petIds;
 
 }
