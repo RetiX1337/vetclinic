@@ -16,4 +16,6 @@ public interface ServiceTypeService {
     List<ServiceType> getAll();
 
     List<ServiceType> getAllByNamePart(String serviceNamePart);
+
+    List<ServiceType> getTop(final int limit);
 }
