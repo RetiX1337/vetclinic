@@ -17,4 +17,6 @@ public interface PetService {
     List<Pet> getAll();
 
     List<Pet> getAllByOwner(Long ownerId);
+
+    boolean isPetOwner(long ownerId, long petId);
 }

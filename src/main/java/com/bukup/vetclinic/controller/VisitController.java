@@ -5,6 +5,7 @@ import com.bukup.vetclinic.dto.VisitScheduleSegment;
 import com.bukup.vetclinic.model.*;
 import com.bukup.vetclinic.security.model.UserDetailsImpl;
 import com.bukup.vetclinic.service.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -66,6 +67,8 @@ public class VisitController {
         return "book-schedule";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') " +
+            "|| @controllerHelper.isPetsOwnerVisitRequest(authentication.principal.id, #visitRequest.petIds)")
     @PostMapping("/book")
     public String bookVisit(@ModelAttribute("concreteVisitRequest") VisitRequest visitRequest,
                             @AuthenticationPrincipal UserDetailsImpl userDetails) {

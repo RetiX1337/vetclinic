@@ -62,7 +62,7 @@ public class AuthController {
             model.addAttribute("exceptionMessage", e.getMessage());
             return "login-form";
         }
-        return "redirect:/home";
+        return "redirect:/";
     }
 
     @PreAuthorize("isAnonymous()")

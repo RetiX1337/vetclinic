@@ -6,6 +6,7 @@ import com.bukup.vetclinic.model.Visitor;
 import com.bukup.vetclinic.service.EmployeeService;
 import com.bukup.vetclinic.service.UserService;
 import com.bukup.vetclinic.service.VisitorService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ public class UserController {
         this.visitorService = visitorService;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') || #id == authentication.principal.id")
     @GetMapping("/profile/{id}")
     public String getProfile(@PathVariable Long id, Model model) {
         User user = userService.findById(id);
