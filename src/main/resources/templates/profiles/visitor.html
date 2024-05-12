@@ -34,6 +34,9 @@
           <td th:text="${user.getPhone()}"></td>
         </tr>
       </table>
+      <div class="mb-3 text-center">
+        <a th:href="@{/visitors/__${id}__/edit}" class="btn btn-success">Edit User</a>
+      </div>
       <h2 class="mb-4 text-center">All Pets</h2>
       <table class="table table-striped">
         <thead>

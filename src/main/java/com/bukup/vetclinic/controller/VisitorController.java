@@ -8,12 +8,10 @@ import com.bukup.vetclinic.service.VisitorService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequestMapping("/visitors")
 public class VisitorController {
     private final VisitorService visitorService;
     private final UserMapper userMapper;
@@ -23,7 +21,7 @@ public class VisitorController {
         this.visitorService = visitorService;
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') || authentication.principal.id == #id")
     @GetMapping("/{id}/edit")
     public String editVisitor(@PathVariable Long id, Model model) {
         final Visitor visitor = visitorService.findById(id);
@@ -32,7 +30,7 @@ public class VisitorController {
         return "visitors/editVisitor";
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') || authentication.principal.id == #id")
     @PostMapping("/{id}")
     public String updateVisitor(@PathVariable Long id,
                                 @ModelAttribute("visitor") VisitorRequest visitorRequest) {
