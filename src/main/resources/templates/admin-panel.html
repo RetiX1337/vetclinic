@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+<div class="container py-5">
+    <h2 class="mb-4 text-center">Admin Panel</h2>
+
+    <!-- Categories -->
+    <h3>Categories</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="category : ${categories}">
+            <td th:text="${category.id}"></td>
+            <td th:text="${category.type}"></td>
+            <td class="d-flex align-items-center">
+                <a th:href="@{'/categories/' + ${category.id} + '/edit'}" class="btn btn-primary m-1">Edit</a>
+                <form th:action="@{'/categories/' + ${category.id} + '/delete'}" th:method="post">
+                    <input type="submit" class="btn btn-danger" value="Delete">
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/categories/new" class="btn btn-success">Add New Category</a>
+
+    <!-- Service Types -->
+    <h3 class="mt-4">Service Types</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="serviceType : ${serviceTypes}">
+            <td th:text="${serviceType.id}"></td>
+            <td th:text="${serviceType.name}"></td>
+            <td th:text="${serviceType.category.type}"></td>
+            <td class="d-flex align-items-center">
+                <a th:href="@{'/service/' + ${serviceType.id} + '/edit'}" class="btn btn-primary m-1">Edit</a>
+                <form th:action="@{'/service/' + ${serviceType.id} + '/delete'}" th:method="post">
+                    <input type="submit" class="btn btn-danger" value="Delete">
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/service/new" class="btn btn-success">Add New Service Type</a>
+
+    <!-- Employees -->
+    <h3 class="mt-4">Employees</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee : ${employees}">
+            <td th:text="${employee.user.id}"></td>
+            <td th:text="${employee.user.firstName + ' ' + employee.user.lastName}"></td>
+            <td th:text="${employee.user.email}"></td>
+            <td th:text="${employee.user.phone}"></td>
+            <td class="d-flex align-items-center">
+                <a th:href="@{'/profile/' + ${employee.user.id}}" class="btn btn-success m-1">View</a>
+                <a th:href="@{'/employees/' + ${employee.user.id} + '/edit'}" class="btn btn-primary m-1">Edit</a>
+                <form th:action="@{'/employees/' + ${employee.user.id} + '/delete'}" th:method="post">
+                    <input type="submit" class="btn btn-danger" value="Delete">
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/employees/new" class="btn btn-success">Add New Employee</a>
+</div>
+</body>
+</html>
