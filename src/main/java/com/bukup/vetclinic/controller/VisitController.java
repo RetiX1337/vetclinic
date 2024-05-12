@@ -5,14 +5,12 @@ import com.bukup.vetclinic.dto.VisitScheduleSegment;
 import com.bukup.vetclinic.model.*;
 import com.bukup.vetclinic.security.model.UserDetailsImpl;
 import com.bukup.vetclinic.service.*;
+import jakarta.persistence.EntityExistsException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -83,6 +81,18 @@ public class VisitController {
         return "redirect:/profile/" + userDetails.getId();
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') " +
+            "|| @controllerHelper.isEmployeeVisit(authentication.principal.id, #id)")
+    @PostMapping("/visit/{id}/result")
+    public String bookVisit(@RequestParam("result") String result,
+                            @PathVariable("id") long id,
+                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        final Visit visit = visitService.findById(id);
+        visit.setResult(result);
+        visitService.update(visit);
+        return "redirect:/profile/" + userDetails.getId();
+    }
+
     private void validateWeekNumber(int weekNumber) {
         if (weekNumber > 4 || weekNumber < 1) {
             throw new IllegalArgumentException("Week has to be between 1 and 4");
@@ -114,6 +124,9 @@ public class VisitController {
         LocalDateTime[] startEndTime = Arrays.stream(visitRequest.getDelimitedTime().split("-"))
                 .map(time -> LocalDateTime.parse(time, formatter))
                 .toArray(LocalDateTime[]::new);
+        if (schedule.containsTimeSlot(startEndTime[0], startEndTime[1])) {
+            throw new EntityExistsException("Time Slot is already taken");
+        }
         timeSlot.setStartTime(startEndTime[0]);
         timeSlot.setEndTime(startEndTime[1]);
         timeSlot.setSchedule(schedule);

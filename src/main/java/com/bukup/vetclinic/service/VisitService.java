@@ -15,4 +15,6 @@ public interface VisitService {
     void delete(long id);
 
     List<Visit> getAll();
+
+    boolean isEmployeeVisit(long employeeId, long visitId);
 }

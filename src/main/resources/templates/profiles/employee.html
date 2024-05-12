@@ -14,7 +14,7 @@
 <header th:replace="fragments/header :: header"></header>
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-9">
             <h2 class="mb-4 text-center">Employee Profile</h2>
             <table class="table table-striped">
                 <tr>
@@ -47,6 +47,7 @@
                     <th>Visitor</th>
                     <th>Pets</th>
                     <th>Result</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -55,11 +56,18 @@
                     <td th:text="${visit.serviceType.getName()}"></td>
                     <td th:text="${visit.visitor.user.firstName + ' ' + visit.visitor.user.lastName}"></td>
                     <td>
-                        <span th:each="pet : ${visit.getPets()}"
-                              th:text="${pet.getName() + ' ' + pet.animalType + ', '}">
-                        </span>
+                        <span th:text="${#strings.listJoin(visit.pets, ', ')}"></span>
                     </td>
                     <td th:text="${visit.result != null ? visit.result : 'No result yet'}"></td>
+                    <td>
+                        <form th:action="@{/visit/__${visit.id}__/result}" method="post">
+                            <input type="text" th:name="result" th:id="${visitStat.index}"
+                                   style="display: none;">
+                            <button type="button" onclick="this.previousElementSibling.style.display='block';
+                                       this.nextElementSibling.style.display='block'; this.style.display='none';">Modify Result</button>
+                            <button type="submit" style="display: none;">Submit</button>
+                        </form>
+                    </td>
                 </tr>
                 </tbody>
             </table>

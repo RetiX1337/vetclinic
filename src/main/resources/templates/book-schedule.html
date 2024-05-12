@@ -37,8 +37,8 @@
 <header th:replace="fragments/header :: header"></header>
 <div class="container">
     <h2 class="my-4 text-center">Schedule for Employee: <span
-            th:text="${employee.user.getLastName() + employee.user.getLastName()}"></span></h2>
-    <h4 class="my-4 text-center">Book visit for: <span th:text="${pets}"></span>, Service: <span
+            th:text="${employee.user.getFirstName() + ' ' + employee.user.getLastName()}"></span></h2>
+    <h4 class="my-4 text-center">Book visit for service: <span
             th:text="${serviceType.getName()}"></span></h4>
     <form th:action="@{/book}" method="post" th:object="${concreteVisitRequest}">
         <div class="accordion" id="accordionExample">
@@ -61,10 +61,14 @@
                                 <div class="d-flex flex-row justify-content-around">
                                     <div th:each="entry : ${visitScheduleSegments.entrySet()}"
                                          th:if="${entry.key.toLocalDate().equals(day)}">
-                                        <input type="radio" th:name="delimitedTime" th:value="${entry.value.startTime + '-' + entry.value.endTime}"
-                                               th:id="'timeSlot' + ${entry.value.startTime + '-' + entry.value.endTime}" style="display: none;" />
-                                        <label class="btn btn-primary mb-2 btn-lg card-selectable" th:for="'timeSlot' + ${entry.value.startTime + '-' + entry.value.endTime}"
-                                               th:text="${entry.key.toLocalTime()}" th:disabled="${schedule.containsTimeSlot(entry.value.startTime, entry.value.endTime)}"
+                                        <input type="radio" th:name="delimitedTime"
+                                               th:value="${entry.value.startTime + '-' + entry.value.endTime}"
+                                               th:id="'timeSlot' + ${entry.value.startTime + '-' + entry.value.endTime}"
+                                               style="display: none;"/>
+                                        <label class="btn btn-primary mb-2 btn-lg card-selectable"
+                                               th:for="'timeSlot' + ${entry.value.startTime + '-' + entry.value.endTime}"
+                                               th:text="${entry.key.toLocalTime()}"
+                                               th:disabled="${schedule.containsTimeSlot(entry.value.startTime, entry.value.endTime)}"
                                                th:classappend="${schedule.containsTimeSlot(entry.value.startTime, entry.value.endTime) ? 'disabled' : ''}"
                                         ></label>
                                     </div>
@@ -78,10 +82,11 @@
         <h4 class="my-4 text-center">Choose pets</h4>
         <div class="d-flex flex-row justify-content-center">
             <div class="" th:each="pet : ${pets}">
-                <div class="card mb-3 ms-3 hover-card" role="button" >
+                <div class="card mb-3 ms-3 hover-card" role="button">
                     <div class="card-body">
                         <h3 class="card-title text-center" th:text="${pet}"></h3>
-                        <input type="checkbox" th:name="petIds" th:value="${pet.getId()}" th:id="${pet}" style="display:none;" />
+                        <input type="checkbox" th:name="petIds" th:value="${pet.getId()}" th:id="${pet}"
+                               style="display:none;"/>
                         <label th:for="${pet}"></label>
                     </div>
                 </div>
@@ -108,8 +113,8 @@
 </div>
 </body>
 <script>
-    document.querySelectorAll('.hover-card').forEach(function(card) {
-        card.addEventListener('click', function(event) {
+    document.querySelectorAll('.hover-card').forEach(function (card) {
+        card.addEventListener('click', function (event) {
             var checkbox = this.querySelector('input[type=checkbox]');
             if (event.target !== checkbox) {
                 checkbox.checked = !checkbox.checked;

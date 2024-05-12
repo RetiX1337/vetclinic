@@ -45,4 +45,9 @@ public class DefaultVisitService implements VisitService {
     public List<Visit> getAll() {
         return visitRepository.findAll();
     }
+
+    @Override
+    public boolean isEmployeeVisit(long employeeId, long visitId) {
+        return visitRepository.isEmployeeVisit(employeeId, visitId);
+    }
 }
