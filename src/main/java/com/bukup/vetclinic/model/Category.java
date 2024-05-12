@@ -25,4 +25,9 @@ public class Category
 
 	@OneToMany(mappedBy = "category")
 	private Set<ServiceType> serviceTypes;
+
+	@Override
+	public String toString() {
+		return type;
+	}
 }

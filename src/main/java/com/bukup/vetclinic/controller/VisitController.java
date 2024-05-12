@@ -17,6 +17,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -45,10 +46,9 @@ public class VisitController {
     public String getSchedule(Model model,
                               @RequestParam(value = "employeeId") long employeeId,
                               @RequestParam(value = "serviceTypeId") long serviceTypeId,
-                              @RequestParam(value = "pets") String petIds,
-                              @RequestParam(value = "week") int weekNumber) {
+                              @RequestParam(value = "week") int weekNumber,
+                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
         validateWeekNumber(weekNumber);
-        List<Pet> pets = getPets(petIds);
         ServiceType serviceType = getServiceType(serviceTypeId);
         Employee employee = getEmployee(employeeId);
         Schedule schedule = employee.getSchedule();
@@ -62,8 +62,7 @@ public class VisitController {
         model.addAttribute("weekNumber", weekNumber);
         model.addAttribute("employee", employee);
         model.addAttribute("serviceType", serviceType);
-        model.addAttribute("pets", pets);
-        model.addAttribute("petIds", petIds);
+        model.addAttribute("pets", petService.getAllByOwner(userDetails.getId()));
         return "book-schedule";
     }
 
@@ -78,23 +77,13 @@ public class VisitController {
         scheduleService.update(employee.getSchedule());
         Visit visit = createVisit(visitRequest, visitor, employee, timeSlot);
         visitService.create(visit);
-        return "";
+        return "redirect:/profile/" + userDetails.getId();
     }
 
     private void validateWeekNumber(int weekNumber) {
         if (weekNumber > 4 || weekNumber < 1) {
             throw new IllegalArgumentException("Week has to be between 1 and 4");
         }
-    }
-
-    private List<Pet> getPets(String petIds) {
-        List<Long> petIdList = Arrays.stream(petIds.split(","))
-                .map(Long::valueOf)
-                .toList();
-
-        return petIdList.stream()
-                .map(petService::findById)
-                .collect(Collectors.toList());
     }
 
     private ServiceType getServiceType(long serviceTypeId) {
@@ -118,8 +107,12 @@ public class VisitController {
 
     private TimeSlot createTimeSlot(VisitRequest visitRequest, Schedule schedule) {
         TimeSlot timeSlot = new TimeSlot();
-        timeSlot.setStartTime(visitRequest.getStartTime());
-        timeSlot.setEndTime(visitRequest.getEndTime());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
+        LocalDateTime[] startEndTime = Arrays.stream(visitRequest.getDelimitedTime().split("-"))
+                .map(time -> LocalDateTime.parse(time, formatter))
+                .toArray(LocalDateTime[]::new);
+        timeSlot.setStartTime(startEndTime[0]);
+        timeSlot.setEndTime(startEndTime[1]);
         timeSlot.setSchedule(schedule);
         return timeSlot;
     }
@@ -129,7 +122,8 @@ public class VisitController {
         visit.setVisitor(visitor);
         visit.setEmployee(employee);
         visit.setTimeSlot(timeSlot);
-        visit.setPets(visitRequest.getPetIds().stream()
+        visit.setPets(Arrays.stream(visitRequest.getPetIds().split(","))
+                .map(Long::parseLong)
                 .map(petService::findById)
                 .collect(Collectors.toSet()));
         visit.setServiceType(serviceTypeService.findById(visitRequest.getServiceTypeId()));

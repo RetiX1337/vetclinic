@@ -51,6 +51,11 @@ public class DefaultServiceTypeService implements ServiceTypeService {
         return serviceTypeRepository.findAll();
     }
 
+    @Override
+    public List<ServiceType> getAllByNamePart(String serviceNamePart) {
+        return serviceTypeRepository.findServiceTypeByNameContainingIgnoreCase(serviceNamePart);
+    }
+
     private void checkIfServiceTypeExistsByName(final String name) {
         if (serviceTypeRepository.existsByName(name)) {
             throw new EntityExistsException("ServiceType with name " + name + " already exists");

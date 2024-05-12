@@ -1,6 +1,7 @@
 package com.bukup.vetclinic.service.impl;
 
 import com.bukup.vetclinic.model.Employee;
+import com.bukup.vetclinic.model.ServiceType;
 import com.bukup.vetclinic.model.User;
 import com.bukup.vetclinic.repository.EmployeeRepository;
 import com.bukup.vetclinic.repository.VisitorRepository;
@@ -62,6 +63,11 @@ public class DefaultEmployeeService implements EmployeeService {
     @Override
     public boolean existsByUserId(long userId) {
         return employeeRepository.existsById(userId);
+    }
+
+    @Override
+    public List<Employee> getAllByServiceType(String serviceName) {
+        return employeeRepository.findEmployeesByServiceType(serviceName);
     }
 
     private void checkIfEmployeeExistsByUser(long userId) {

@@ -14,4 +14,6 @@ public interface ServiceTypeService {
     void delete(long id);
 
     List<ServiceType> getAll();
+
+    List<ServiceType> getAllByNamePart(String serviceNamePart);
 }

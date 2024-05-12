@@ -29,10 +29,10 @@ public class TimeSlot
 	@OneToOne(mappedBy = "timeSlot", cascade = CascadeType.ALL)
 	private Visit visit;
 
-	@Column(name = "start_time")
+	@Column(name = "start_time", nullable = false)
 	private LocalDateTime startTime;
 
-	@Column(name = "end_time")
+	@Column(name = "end_time", nullable = false)
 	private LocalDateTime endTime;
 
 	@ManyToOne
