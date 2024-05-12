@@ -1,7 +1,6 @@
 package com.bukup.vetclinic.service;
 
 import com.bukup.vetclinic.model.Pet;
-import com.bukup.vetclinic.model.Visitor;
 
 import java.util.List;
 
