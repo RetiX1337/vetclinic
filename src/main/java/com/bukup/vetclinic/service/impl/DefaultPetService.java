@@ -56,6 +56,11 @@ public class DefaultPetService implements PetService {
         return petRepository.findAllByOwner_user_id(ownerId);
     }
 
+    @Override
+    public boolean isPetOwner(long ownerId, long petId) {
+        return petRepository.isPetOwner(ownerId, petId);
+    }
+
     private void checkIfPetExistsByNameForVisitor(final String name, final Visitor visitor) {
         if (petRepository.existsByNameAndOwner(name, visitor)) {
             throw new EntityExistsException("Pet with name " + name + " for Visitor " + visitor.getUserId() + " already exists");
