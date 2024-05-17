@@ -11,7 +11,7 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<header th:replace="fragments/header :: header"></header>
+<header th:replace="~{fragments/header :: header}"></header>
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-9">
@@ -56,16 +56,19 @@
                     <td th:text="${visit.serviceType.getName()}"></td>
                     <td th:text="${visit.visitor.user.firstName + ' ' + visit.visitor.user.lastName}"></td>
                     <td>
-                        <span th:text="${#strings.listJoin(visit.pets, ', ')}"></span>
+                        <div th:each="pet : ${visit.pets}">
+                            <a th:href="@{/pets/__${pet.id}__}" th:text="${pet.name}"></a>
+                            <span th:if="${!petStat.last}">, </span>
+                        </div>
                     </td>
                     <td th:text="${visit.result != null ? visit.result : 'No result yet'}"></td>
                     <td>
                         <form th:action="@{/visit/__${visit.id}__/result}" method="post">
                             <input type="text" th:name="result" th:id="${visitStat.index}"
                                    style="display: none;">
-                            <button type="button" onclick="this.previousElementSibling.style.display='block';
+                            <button class="btn btn-info m-1" type="button" onclick="this.previousElementSibling.style.display='block';
                                        this.nextElementSibling.style.display='block'; this.style.display='none';">Modify Result</button>
-                            <button type="submit" style="display: none;">Submit</button>
+                            <button class="btn btn-info m-1" type="submit" style="display: none;">Submit</button>
                         </form>
                     </td>
                 </tr>

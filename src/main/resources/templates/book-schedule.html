@@ -34,7 +34,7 @@
     </style>
 </head>
 <body>
-<header th:replace="fragments/header :: header"></header>
+<header th:replace="~{fragments/header :: header}"></header>
 <div class="container">
     <h2 class="my-4 text-center">Schedule for Employee: <span
             th:text="${employee.user.getFirstName() + ' ' + employee.user.getLastName()}"></span></h2>
@@ -45,6 +45,7 @@
             <div class="container rounded-3 py-3 bg-light mb-2">
                 <div class="row">
                     <div class="col" th:each="day : ${week}">
+                        <div class="text-secondary text-center" th:text="${day.getDayOfWeek().name().substring(0, 3)}"></div>
                         <div class="card mb-3 hover-card" style="cursor: pointer;" data-bs-toggle="collapse"
                              th:href="'#collapse' + ${dayStat.index}" role="button" aria-expanded="false"
                              aria-controls="'collapse' + ${dayStat.index}" data-bs-parent="#accordionExample">
@@ -72,6 +73,8 @@
                                                th:classappend="${schedule.containsTimeSlot(entry.value.startTime, entry.value.endTime) ? 'disabled' : ''}"
                                         ></label>
                                     </div>
+                                    <small class="form-text text-muted" th:if="${#fields.hasErrors('delimitedTime')}"
+                                           th:errors="*{delimitedTime}"></small>
                                 </div>
                             </div>
                         </div>
@@ -92,6 +95,8 @@
                 </div>
             </div>
         </div>
+        <small class="form-text text-muted" th:if="${#fields.hasErrors('petIds')}"
+               th:errors="*{petIds}"></small>
         <input type="hidden" th:name="serviceTypeId" th:value="${serviceType.getId()}"/>
         <input type="hidden" th:name="employeeId" th:value="${employee.getUserId()}"/>
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -106,6 +111,7 @@
         <button th:data-employeeId="${employee.getUserId()}" th:data-serviceTypeId="${serviceType.getId()}"
                 th:data-week="${weekNumber + 1}" class="btn btn-secondary"
                 th:if="${weekNumber < 4}"
+                th:disabled="${pets.isEmpty()}"
                 onclick="window.location.href='?employeeId=' + this.getAttribute('data-employeeId') + '&serviceTypeId=' + this.getAttribute('data-serviceTypeId') + '&week=' + this.getAttribute('data-week')">
             Next Week
         </button>

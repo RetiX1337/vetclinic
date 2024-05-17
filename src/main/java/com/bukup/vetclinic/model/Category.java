@@ -20,14 +20,26 @@ public class Category
 	@Column(name = "type", unique = true, nullable = false)
 	private String type;
 
-	@ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.REFRESH })
 	private Set<Employee> employees;
 
-	@OneToMany(mappedBy = "category")
+	@OneToMany(mappedBy = "category", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	private Set<ServiceType> serviceTypes;
 
 	@Override
 	public String toString() {
 		return type;
+	}
+
+	@PreRemove
+	private void handlePreRemove() {
+		removeCategoryFromEmployees();
+	}
+
+	private void removeCategoryFromEmployees() {
+		for (Employee employee : employees) {
+			employee.getCategories().remove(this);
+		}
 	}
 }

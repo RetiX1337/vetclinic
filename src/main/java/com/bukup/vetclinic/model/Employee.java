@@ -20,13 +20,13 @@ public class Employee
 	@MapsId
 	private User user;
 
-	@OneToMany(mappedBy = "employee")
+	@OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	private Set<Visit> visits;
 
 	@OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
 	private Schedule schedule;
 
-	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REFRESH })
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	@JoinTable(
 			name = "employee_categories",
 			joinColumns = { @JoinColumn(name = "employee_id") },

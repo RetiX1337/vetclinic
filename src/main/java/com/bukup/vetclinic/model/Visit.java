@@ -17,7 +17,7 @@ public class Visit implements Comparable<Visit>
 	@Column(name = "id", nullable = false)
 	private Long id;
 
-	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	@JoinTable(
 			name = "visits_pets",
 			joinColumns = { @JoinColumn(name = "visit_id") },

@@ -15,9 +15,14 @@
                         My profile
                     </a>
                 </li>
+                <li class="nav-item me-2" sec:authorize="isAuthenticated() && hasAuthority('ADMIN')">
+                    <a class="btn btn-outline-primary" th:href="@{'/admin-panel'}">
+                        Admin Panel
+                    </a>
+                </li>
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <div class="nav-item me-2" sec:authorize="isAuthenticated()">
+                <div class="nav-item me-2">
                     <form th:action="@{/service/search}" method="get">
                         <div class="input-group mb-3">
                             <input type="text" class="form-control m-2" placeholder="Search for services..."

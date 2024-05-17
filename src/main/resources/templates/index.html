@@ -10,7 +10,7 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<header th:replace="fragments/header :: header"></header>
+<header th:replace="~{fragments/header :: header}"></header>
 <div class="container mt-5">
     <!-- Jumbotron -->
     <div class="jumbotron bg-light p-5 border rounded shadow">
@@ -19,6 +19,17 @@
     </div>
 
     <h3 class="my-4 text-center">Some of our services: </h3>
+    <div class="nav-item me-2">
+        <form th:action="@{/service/search}" method="get">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control m-2" placeholder="Search for services..."
+                       name="serviceNamePart">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary m-2" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
     <div class="row justify-content-center">
         <div th:each="serviceType : ${serviceTypes}" class="col-sm-3">
             <div class="card m-2 shadow">

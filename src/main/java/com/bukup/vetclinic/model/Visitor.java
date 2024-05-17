@@ -20,9 +20,9 @@ public class Visitor
 	@MapsId
 	private User user;
 
-	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "owner", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	private Set<Pet> pets;
 
-	@OneToMany(mappedBy = "visitor", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "visitor", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	private Set<Visit> visits;
 }

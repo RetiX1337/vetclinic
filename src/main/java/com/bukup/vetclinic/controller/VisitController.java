@@ -6,10 +6,12 @@ import com.bukup.vetclinic.model.*;
 import com.bukup.vetclinic.security.model.UserDetailsImpl;
 import com.bukup.vetclinic.service.*;
 import jakarta.persistence.EntityExistsException;
+import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
@@ -41,6 +43,8 @@ public class VisitController {
         this.scheduleService = scheduleService;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') " +
+            "|| @defaultVisitorService.existsByUserId(authentication.principal.id)")
     @GetMapping("/book")
     public String getSchedule(Model model,
                               @RequestParam(value = "employeeId") long employeeId,
@@ -66,10 +70,14 @@ public class VisitController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN') " +
-            "|| @controllerHelper.isPetsOwnerVisitRequest(authentication.principal.id, #visitRequest.petIds)")
+            "|| @controllerHelper.isPetsOwnerVisitRequest(authentication.principal.id, #visitRequest.petIds)" +
+            "|| @defaultVisitorService.existsByUserId(authentication.principal.id)")
     @PostMapping("/book")
-    public String bookVisit(@ModelAttribute("concreteVisitRequest") VisitRequest visitRequest,
-                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public String bookVisit(@Valid @ModelAttribute("concreteVisitRequest") VisitRequest visitRequest,
+                            BindingResult result, @AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
+        if (result.hasErrors()) {
+            throw new IllegalArgumentException("Incorrect request");
+        }
         Visitor visitor = getVisitor(userDetails.getId());
         Employee employee = getEmployee(visitRequest.getEmployeeId());
         Schedule schedule = employee.getSchedule();
@@ -84,7 +92,7 @@ public class VisitController {
     @PreAuthorize("hasAuthority('ADMIN') " +
             "|| @controllerHelper.isEmployeeVisit(authentication.principal.id, #id)")
     @PostMapping("/visit/{id}/result")
-    public String bookVisit(@RequestParam("result") String result,
+    public String modifyVisitResult(@RequestParam("result") String result,
                             @PathVariable("id") long id,
                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         final Visit visit = visitService.findById(id);
@@ -109,7 +117,7 @@ public class VisitController {
 
     private List<LocalDate> getWeekDates(int weekNumber) {
         final int firstWeekDate = (weekNumber - 1) * 7;
-        return IntStream.range(firstWeekDate, firstWeekDate + 6)
+        return IntStream.range(firstWeekDate, firstWeekDate + 7)
                 .mapToObj(i -> LocalDate.now().plusDays(i))
                 .collect(Collectors.toList());
     }
@@ -154,7 +162,7 @@ public class VisitController {
 
         for (LocalDate date : week) {
             LocalTime time = startTime;
-            while (!time.isAfter(endTime)) {
+            while (!time.plusHours(1).isAfter(endTime)) {
                 LocalDateTime startDateTime = LocalDateTime.of(date, time);
                 LocalDateTime endDateTime = startDateTime.plusMinutes(slotDuration.toMinutes());
 

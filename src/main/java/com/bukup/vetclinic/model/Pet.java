@@ -32,11 +32,18 @@ public class Pet
 	@JoinColumn(name = "owner_id", nullable = false)
 	private Visitor owner;
 
-	@ManyToMany(mappedBy = "pets")
+	@ManyToMany(mappedBy = "pets", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	private Set<Visit> visits;
 
 	@Override
 	public String toString() {
 		return name + " " + animalType;
+	}
+
+	@PreRemove
+	private void removePetsFromVisits() {
+		for (Visit visit : visits) {
+			visit.getPets().remove(this);
+		}
 	}
 }

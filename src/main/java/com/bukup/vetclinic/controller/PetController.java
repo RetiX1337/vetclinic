@@ -5,6 +5,7 @@ import com.bukup.vetclinic.model.Pet;
 import com.bukup.vetclinic.model.Visitor;
 import com.bukup.vetclinic.security.model.UserDetailsImpl;
 import com.bukup.vetclinic.security.utils.ControllerHelper;
+import com.bukup.vetclinic.service.EmployeeService;
 import com.bukup.vetclinic.service.PetService;
 import com.bukup.vetclinic.service.VisitorService;
 import jakarta.validation.Valid;
@@ -22,15 +23,19 @@ import java.time.LocalDate;
 public class PetController {
     private final PetService petService;
     private final VisitorService visitorService;
+    private final EmployeeService employeeService;
     private final ControllerHelper controllerHelper;
 
-    public PetController(PetService petService, VisitorService visitorService, ControllerHelper controllerHelper) {
+    public PetController(PetService petService, VisitorService visitorService, EmployeeService employeeService,
+                         ControllerHelper controllerHelper) {
         this.petService = petService;
         this.visitorService = visitorService;
         this.controllerHelper = controllerHelper;
+        this.employeeService = employeeService;
     }
 
-    @PreAuthorize("hasAuthority('ADMIN') || @controllerHelper.isPetOwner(authentication.principal.id, #id)")
+    @PreAuthorize("hasAuthority('ADMIN') || @controllerHelper.isPetOwner(authentication.principal.id, #id) " +
+            "|| @defaultEmployeeService.existsByUserId(authentication.principal.id)")
     @GetMapping("/{id}")
     public String getPet(@PathVariable Long id, Model model) {
         model.addAttribute("pet", petService.findById(id));
@@ -51,14 +56,15 @@ public class PetController {
         return "redirect:/profile/" + pet.getOwner().getUserId();
     }
 
-    @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN') || #userId == authentication.principal.id")
+    @PostMapping("/{userId}")
     public String createPet(@Valid @ModelAttribute("pet") PetRequest petRequest, BindingResult result,
-                            @AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
+                            @PathVariable Long userId, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("pet", petRequest);
             return "pets/newPet";
         }
-        final Visitor owner = visitorService.findById(userDetails.getId());
+        final Visitor owner = visitorService.findById(userId);
 
         final Pet pet = new Pet();
         pet.setName(petRequest.getName());

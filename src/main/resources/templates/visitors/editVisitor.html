@@ -11,7 +11,7 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<header th:replace="fragments/header :: header"></header>
+<header th:replace="~{fragments/header :: header}"></header>
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -52,6 +52,10 @@
                     <input type="password" class="form-control" id="password" th:field="*{userRequest.password}">
                     <small class="form-text text-muted" th:if="${#fields.hasErrors('userRequest.password')}"
                            th:errors="*{userRequest.password}"></small>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" class="btn btn-primary" value="Update">
+                    <input type="reset" class="btn btn-secondary" value="Clear">
                 </div>
             </form>
         </div>
