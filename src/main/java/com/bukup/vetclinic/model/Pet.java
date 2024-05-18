@@ -28,11 +28,11 @@ public class Pet
 	@Column(name = "name")
 	private String name;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "owner_id", nullable = false)
 	private Visitor owner;
 
-	@ManyToMany(mappedBy = "pets", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "pets", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	private Set<Visit> visits;
 
 	@Override

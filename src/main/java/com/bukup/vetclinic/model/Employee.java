@@ -20,7 +20,7 @@ public class Employee
 	@MapsId
 	private User user;
 
-	@OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	private Set<Visit> visits;
 
 	@OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)

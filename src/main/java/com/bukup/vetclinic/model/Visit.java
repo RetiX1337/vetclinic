@@ -17,7 +17,7 @@ public class Visit implements Comparable<Visit>
 	@Column(name = "id", nullable = false)
 	private Long id;
 
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	@JoinTable(
 			name = "visits_pets",
 			joinColumns = { @JoinColumn(name = "visit_id") },
@@ -25,15 +25,15 @@ public class Visit implements Comparable<Visit>
 	)
 	private Set<Pet> pets;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "employee_id")
 	private Employee employee;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "visitor_id")
 	private Visitor visitor;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "service_type_id")
 	private ServiceType serviceType;
 

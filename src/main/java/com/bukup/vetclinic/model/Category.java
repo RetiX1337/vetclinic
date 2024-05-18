@@ -24,7 +24,7 @@ public class Category
 			CascadeType.REFRESH })
 	private Set<Employee> employees;
 
-	@OneToMany(mappedBy = "category", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	private Set<ServiceType> serviceTypes;
 
 	@Override

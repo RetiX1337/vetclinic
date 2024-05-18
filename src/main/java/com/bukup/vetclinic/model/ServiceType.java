@@ -17,7 +17,10 @@ public class ServiceType {
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
+    @Column(name = "description")
+    private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
     @JoinColumn(name = "category_id")
     private Category category;
 }
