@@ -24,6 +24,12 @@
                            th:errors="*{name}"></small>
                 </div>
                 <div class="mb-3">
+                    <label for="description" class="form-label">Description:</label>
+                    <input type="text" class="form-control" id="description" th:field="*{description}">
+                    <small class="form-text text-muted" th:if="${#fields.hasErrors('description')}"
+                           th:errors="*{description}"></small>
+                </div>
+                <div class="mb-3">
                     <label for="categoryId" class="form-label">Category:</label>
                     <select class="form-control" id="categoryId" th:field="*{categoryId}">
                         <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.type}"></option>

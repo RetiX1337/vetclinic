@@ -5,6 +5,9 @@ import com.bukup.vetclinic.model.ServiceType;
 import com.bukup.vetclinic.service.CategoryService;
 import com.bukup.vetclinic.service.ServiceTypeService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +19,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/service")
 public class ServiceTypeController {
+    private static final int SEARCH_PAGE_SIZE = 9;
     private final ServiceTypeService serviceTypeService;
     private final CategoryService categoryService;
 
@@ -25,14 +29,16 @@ public class ServiceTypeController {
     }
 
     @GetMapping("/search")
-    public String searchServices(@RequestParam(value = "serviceNamePart", required = false) String serviceNamePart, Model model) {
-        final List<ServiceType> serviceTypes;
-        if (serviceNamePart == null) {
-            serviceTypes = serviceTypeService.getAll();
-        } else {
-            serviceTypes = serviceTypeService.getAllByNamePart(serviceNamePart);
-        }
+    public String searchServices(@RequestParam(value = "serviceNamePart", required = false) String serviceNamePart,
+                                 @RequestParam(value = "categoryIds", required = false) List<Long> categoryIds,
+                                 @RequestParam(value = "page", defaultValue = "0") int page, Model model) {
+        final Pageable pageable = PageRequest.of(page, SEARCH_PAGE_SIZE);
+        Page<ServiceType> serviceTypes =
+                serviceTypeService.getAllByNamePartAndCategory(serviceNamePart, categoryIds, pageable);
+        model.addAttribute("categories", categoryService.getAll());
         model.addAttribute("serviceTypes", serviceTypes);
+        model.addAttribute("categoryIds", categoryIds);
+        model.addAttribute("serviceNamePart", serviceNamePart);
 
         return "services/search";
     }
@@ -69,6 +75,7 @@ public class ServiceTypeController {
         }
         final ServiceType serviceType = new ServiceType();
         serviceType.setName(serviceTypeRequest.getName());
+        serviceType.setDescription(serviceTypeRequest.getDescription());
         serviceType.setCategory(categoryService.findById(serviceTypeRequest.getCategoryId()));
         serviceTypeService.create(serviceType);
         return "redirect:/admin-panel";
@@ -80,6 +87,7 @@ public class ServiceTypeController {
         final ServiceType serviceType = serviceTypeService.findById(id);
         final ServiceTypeRequest serviceTypeRequest = new ServiceTypeRequest();
         serviceTypeRequest.setName(serviceType.getName());
+        serviceTypeRequest.setDescription(serviceType.getDescription());
         serviceTypeRequest.setCategoryId(serviceType.getId());
         model.addAttribute("serviceType", serviceTypeRequest);
         model.addAttribute("categories", categoryService.getAll());
@@ -98,6 +106,7 @@ public class ServiceTypeController {
         }
         final ServiceType serviceType = serviceTypeService.findById(id);
         serviceType.setName(serviceTypeRequest.getName());
+        serviceType.setDescription(serviceTypeRequest.getDescription());
         serviceType.setCategory(categoryService.findById(serviceTypeRequest.getCategoryId()));
         serviceTypeService.update(serviceType);
         return "redirect:/admin-panel";

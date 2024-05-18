@@ -6,6 +6,9 @@ import com.bukup.vetclinic.service.ServiceTypeService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,13 +55,23 @@ public class DefaultServiceTypeService implements ServiceTypeService {
     }
 
     @Override
-    public List<ServiceType> getAllByNamePart(String serviceNamePart) {
-        return serviceTypeRepository.findServiceTypeByNameContainingIgnoreCase(serviceNamePart);
+    public List<ServiceType> getTop(int limit) {
+        return serviceTypeRepository.findAny(limit);
     }
 
     @Override
-    public List<ServiceType> getTop(int limit) {
-        return serviceTypeRepository.findAny(limit);
+    public Page<ServiceType> getAllByNamePartAndCategory(String serviceNamePart, List<Long> categoryIds, Pageable pageable) {
+        return serviceTypeRepository.findAll(Specification
+                .where(serviceNamePart == null ? null : nameContains(serviceNamePart))
+                .and(categoryIds == null || categoryIds.isEmpty() ? null : categoryIsIn(categoryIds)), pageable);
+    }
+
+    private Specification<ServiceType> nameContains(String serviceNamePart) {
+        return (root, query, cb) -> cb.like(root.get("name"), "%" + serviceNamePart + "%");
+    }
+
+    private Specification<ServiceType> categoryIsIn(List<Long> categoryIds) {
+        return (root, query, cb) -> root.get("category").get("id").in(categoryIds);
     }
 
     private void checkIfServiceTypeExistsByName(final String name) {

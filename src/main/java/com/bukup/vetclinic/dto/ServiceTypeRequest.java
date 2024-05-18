@@ -9,5 +9,8 @@ import lombok.Setter;
 public class ServiceTypeRequest {
     @NotBlank
     private String name;
+    @NotBlank
+    private String description;
+
     private long categoryId;
 }

@@ -42,9 +42,10 @@ public class PetController {
         return "pets/pet";
     }
 
-    @GetMapping("/new")
-    public String newPet(Model model) {
+    @GetMapping("/new/{userId}")
+    public String newPet(@PathVariable Long userId, Model model) {
         model.addAttribute("pet", new PetRequest());
+        model.addAttribute("userId", userId);
         return "pets/newPet";
     }
 
@@ -57,7 +58,7 @@ public class PetController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN') || #userId == authentication.principal.id")
-    @PostMapping("/{userId}")
+    @PostMapping("/new/{userId}")
     public String createPet(@Valid @ModelAttribute("pet") PetRequest petRequest, BindingResult result,
                             @PathVariable Long userId, Model model) {
         if (result.hasErrors()) {
@@ -89,7 +90,7 @@ public class PetController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN') || @controllerHelper.isPetOwner(authentication.principal.id, #id)")
-    @PostMapping("/{id}")
+    @PostMapping("/{id}/edit")
     public String updatePet(@PathVariable Long id, @Valid @ModelAttribute("pet") PetRequest petRequest,
                             BindingResult result, Model model) {
         if (result.hasErrors()) {
