@@ -52,9 +52,12 @@
                 </thead>
                 <tbody>
                 <tr th:each="visit : ${#lists.sort(visits)}">
-                    <td th:text="${visit.timeSlot.startTime}"></td>
+                    <td th:text="${#temporals.format(visit.timeSlot.startTime, 'dd-MM-yyyy HH:mm')}"></td>
                     <td th:text="${visit.serviceType.getName()}"></td>
-                    <td th:text="${visit.visitor.user.firstName + ' ' + visit.visitor.user.lastName}"></td>
+                    <td>
+                        <a th:href="@{'/visitors/' + ${visit.visitor.userId}}"
+                            th:text="${visit.visitor.user.firstName + ' ' + visit.visitor.user.lastName}">View</a>
+                    </td>
                     <td>
                         <div th:each="pet : ${visit.pets}">
                             <a th:href="@{/pets/__${pet.id}__}" th:text="${pet.name}"></a>

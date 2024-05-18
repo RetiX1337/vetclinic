@@ -82,7 +82,7 @@
           </thead>
           <tbody>
           <tr th:each="visit : ${#lists.sort(visits)}">
-            <td th:text="${visit.timeSlot.startTime}"></td>
+            <td th:text="${#temporals.format(visit.timeSlot.startTime, 'dd-MM-yyyy HH:mm')}"></td>
             <td th:text="${visit.serviceType.category.type}"></td>
             <td th:text="${visit.serviceType.name}"></td>
             <td th:text="${#strings.listJoin(visit.pets, ', ')}"></td>

@@ -49,4 +49,11 @@ public class VisitorController {
         visitorService.update(visitor);
         return "redirect:/profile/" + user.getId();
     }
+
+    @PreAuthorize("hasAuthority('ADMIN') || @defaultEmployeeService.existsByUserId(authentication.principal.id)")
+    @GetMapping("/{id}")
+    public String getVisitor(@PathVariable Long id, Model model) {
+        model.addAttribute("visitor", visitorService.findById(id));
+        return "visitors/visitor";
+    }
 }
