@@ -75,6 +75,7 @@
           <tr>
             <th>Date</th>
             <th>Employee Category</th>
+            <th>Employee</th>
             <th>Service Type</th>
             <th>Pets</th>
             <th>Result</th>
@@ -84,6 +85,7 @@
           <tr th:each="visit : ${#lists.sort(visits)}">
             <td th:text="${#temporals.format(visit.timeSlot.startTime, 'dd-MM-yyyy HH:mm')}"></td>
             <td th:text="${visit.serviceType.category.type}"></td>
+            <td th:text="${visit.employee.user.firstName + ' ' + visit.employee.user.lastName}"></td>
             <td th:text="${visit.serviceType.name}"></td>
             <td th:text="${#strings.listJoin(visit.pets, ', ')}"></td>
             <td th:text="${visit.result != null ? visit.result : 'No result yet'}"></td>

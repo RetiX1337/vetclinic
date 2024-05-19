@@ -40,6 +40,7 @@
                     <tr>
                         <th>Date</th>
                         <th>Employee Category</th>
+                        <th>Employee</th>
                         <th>Service Type</th>
                         <th>Result</th>
                     </tr>
@@ -47,6 +48,7 @@
                     <tbody>
                     <tr th:each="visit : ${#lists.sort(pet.visits)}">
                         <td th:text="${#temporals.format(visit.timeSlot.startTime, 'dd-MM-yyyy HH:mm')}"></td>
+                        <td th:text="${visit.employee.user.firstName + ' ' + visit.employee.user.lastName}"></td>
                         <td th:text="${visit.serviceType.category.type}"></td>
                         <td th:text="${visit.serviceType.name}"></td>
                         <td th:text="${visit.result != null ? visit.result : 'No result yet'}"></td>

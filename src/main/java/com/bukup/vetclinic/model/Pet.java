@@ -32,7 +32,7 @@ public class Pet
 	@JoinColumn(name = "owner_id", nullable = false)
 	private Visitor owner;
 
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "pets", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "pets", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	private Set<Visit> visits;
 
 	@Override

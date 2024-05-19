@@ -26,9 +26,6 @@ public class TimeSlot
 	@Column(name = "id", nullable = false)
 	private Long id;
 
-	@OneToOne(mappedBy = "timeSlot", cascade = CascadeType.ALL)
-	private Visit visit;
-
 	@Column(name = "start_time", nullable = false)
 	private LocalDateTime startTime;
 
