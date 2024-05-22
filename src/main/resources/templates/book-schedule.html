@@ -63,7 +63,7 @@
                                     <div th:each="entry : ${visitScheduleSegments.entrySet()}"
                                          th:if="${entry.key.toLocalDate().equals(day)}">
                                         <input type="radio" th:name="delimitedTime"
-                                               th:value="${entry.value.startTime + '-' + entry.value.endTime}"
+                                               th:value="${#temporals.format(entry.value.startTime, 'dd.MM.yyyy, HH:mm')} + '-' + ${#temporals.format(entry.value.endTime, 'dd.MM.yyyy, HH:mm')}"
                                                th:id="'timeSlot' + ${entry.value.startTime + '-' + entry.value.endTime}"
                                                style="display: none;"/>
                                         <label class="btn btn-primary mb-2 btn-lg card-selectable"
