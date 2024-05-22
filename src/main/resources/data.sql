@@ -74,7 +74,7 @@ INSERT INTO public.employee_categories (category_id, employee_id) VALUES
 
 -- Insert a single schedule for one employee (Bob Johnson)
 INSERT INTO public.schedules (day_start_time, day_end_time, time_slot_duration, employee_id) VALUES
-    ('08:00:00', '17:00:00', 30, 4);
+    ('08:00:00', '17:00:00', 3600000000000, 4);
 
 -- Insert visitors
 INSERT INTO public.visitors (user_id) VALUES
